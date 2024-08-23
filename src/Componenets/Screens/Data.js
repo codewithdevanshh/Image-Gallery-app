@@ -28,6 +28,7 @@ export default function Data({ query }) {
           description: result.alt_description,
           name: result.user.username,
           portfolio: result.user.portfolio_url,
+         
         }));
 
         setValue(imageList);
@@ -54,6 +55,7 @@ export default function Data({ query }) {
             description={image.description}
             portfolio={image.portfolio}
             name={image.name}
+          
             onClick={() => open(image)}
           />
         </div>

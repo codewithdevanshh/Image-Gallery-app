@@ -1,14 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./Home.css";
 import Data from "./Data";
 import { useState, useEffect } from "react";
 import Search from "./Search";
-const image = "front (2).jpg";
+import Norightclick from "./Norightclick";
+import Slideshow from "./Slideshow";
+import Slider from "../Slider";
+import { AuthContext } from "./AuthContext";
+import { Navigate } from "react-router-dom";
+import Navbar from "./Navbar";
+
 export default function Home() {
   const [searchres, setsearchres] = useState([]);
   const [searchitem, setsearchitem] = useState("");
   const [loading, setLoading] = useState(false);
+  const {token} = useContext(AuthContext);
 
+   
   const fetchimage = async (query) => {
     setLoading(true);
     try {
@@ -35,16 +43,26 @@ export default function Home() {
       fetchimage(searchitem);
     }
   }, [searchitem]);
+
+  if(!token) return <Navigate to="/Login" replace/>
   return (
     <div>
-      <div className="container">
-        <img src={image} className="image" />
+        {/* <div className="container"> */}
+          {/* <img src={image} className="image" /> */}
+          {/* <Slideshow /> */}
+  
+
+    
+        {/* </div> */}
+        <Navbar/>
+        <Slider />
+        <Norightclick>
+        <div>
+          <h1 style={{ textAlign: "center", fontSize: "50px" }}>Images</h1>
+          <Search onSearch={(query) => setsearchitem(query)} />
+          {loading ? <p>Loading...</p> : <Data query={searchitem} />}
+        </div>
+    </Norightclick>
       </div>
-      <div>
-        <h1 style={{ textAlign: "center", fontSize: "50px" }}>Images</h1>
-        <Search onSearch={(query) => setsearchitem(query)} />
-        {loading ? <p>Loading...</p> : <Data query={searchitem} />}
-      </div>
-    </div>
   );
 }
